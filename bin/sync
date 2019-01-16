@@ -1,0 +1,7 @@
+#/bin/bash
+_ROOT=$(cd `dirname $0`/../../; pwd)
+SOURCE="$_ROOT/trix/dist/*" 
+TARGET="$_ROOT/ui/tech/web/desktop/assets/js/trix/"
+rsync -avz $SOURCE $TARGET
+echo "ls -l $TARGET"
+ls -l $TARGET
