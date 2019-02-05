@@ -3,7 +3,7 @@ Trix.config.lang =
   bullets: "Bullets"
   byte:  "Byte"
   bytes: "Bytes"
-  captionPlaceholder: "添加标题..."
+  captionPlaceholder: "添加图片说明文字..."
   code: "代码"
   heading1: "一级标题"
   indent: "Increase Level"
