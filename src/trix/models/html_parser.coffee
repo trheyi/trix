@@ -60,15 +60,22 @@ class Trix.HTMLParser extends Trix.BasicObject
         @processElement(node)
 
   appendBlockForElement: (element) ->
+    
     elementIsBlockElement = @isBlockElement(element)
     currentBlockContainsElement = elementContainsNode(@currentBlockElement, element)
-
+    
     if elementIsBlockElement and not @isBlockElement(element.firstChild)
       unless @isInsignificantTextNode(element.firstChild) and @isBlockElement(element.firstElementChild)
         attributes = @getBlockAttributes(element)
         unless currentBlockContainsElement and arraysAreEqual(attributes, @currentBlock.attributes)
-          @currentBlock = @appendBlockForAttributesWithElement(attributes, element)
-          @currentBlockElement = element
+          # Hacked by Weiping . fix auto append <p><br/></p> element bug
+          if element.previousSibling and element.previousSibling.nodeName is "FIGURE"
+            @currentBlock = null
+            @currentBlockElement = null
+            # console.log "currentBlockContainsElement", element.nodeName, element.innerHTML, element.previousSibling, attributes
+          else 
+            @currentBlock = @appendBlockForAttributesWithElement(attributes, element)
+            @currentBlockElement = element
 
     else if @currentBlockElement and not currentBlockContainsElement and not elementIsBlockElement
       if parentBlockElement = @findParentBlockElement(element)
@@ -76,9 +83,9 @@ class Trix.HTMLParser extends Trix.BasicObject
       else if element.nodeName is "FIGURE"  # Hacked by Weiping . fix auto append <p><br/></p> element bug
         @currentBlock = null
         @currentBlockElement = null
-        # console.log element.nodeName, element.innerHTML
+        # console.log "FIGURE", element.nodeName, element.innerHTML
       else
-        @currentBlock = @appendEmptyBlock()
+        @currentBlock = @appendEmptyBlock() 
         @currentBlockElement = null
 
   findParentBlockElement: (element) ->
