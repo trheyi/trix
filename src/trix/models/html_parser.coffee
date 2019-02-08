@@ -73,6 +73,10 @@ class Trix.HTMLParser extends Trix.BasicObject
     else if @currentBlockElement and not currentBlockContainsElement and not elementIsBlockElement
       if parentBlockElement = @findParentBlockElement(element)
         @appendBlockForElement(parentBlockElement)
+      else if element.nodeName is "FIGURE"  # Hacked by Weiping . fix auto append <p><br/></p> element bug
+        @currentBlock = null
+        @currentBlockElement = null
+        # console.log element.nodeName, element.innerHTML
       else
         @currentBlock = @appendEmptyBlock()
         @currentBlockElement = null
